@@ -3,5 +3,4 @@ pandas
 numpy
 datetime
 matplotlib
-json
 urllib3
