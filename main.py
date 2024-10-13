@@ -74,7 +74,7 @@ for file in files:
 
 players_df.loc[players_df['team.abbreviation'] == 'ORI', 'team.abbreviation'] = 'ANZ'
    
-player_options, teams = players_breakdown(players_df.sort_values(by=['player.lastName']).sort_values(by=['season'], ascending=[True]))
+player_options, teams = players_breakdown(players_df.sort_values(by=['season', 'player.lastName'], ascending=[False, True]))
 
 _dir = './Static/Data/Stats/'
 files = os.listdir(_dir)
