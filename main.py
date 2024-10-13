@@ -72,7 +72,7 @@ for file in files:
         players_list = players_df['player.id'].unique().tolist()
         players_df = pd.concat([players_df, df.loc[~df['player.id'].isin(players_list)]], ignore_index=True)
    
-player_options, teams = players_breakdown(players_df.sort_values(by=['season', 'player.lastName'], ascending=[False, True]))
+player_options, teams = players_breakdown(players_df.sort_values(by=['player.lastName','season'], ascending=[True, False]))
 
 _dir = './Static/Data/Stats/'
 files = os.listdir(_dir)
