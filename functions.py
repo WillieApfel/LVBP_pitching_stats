@@ -30,7 +30,7 @@ def show_spraychart(hit_colors, plot_data, title):
         lambda x: x if x in hit_colors else 'out'
     )
 
-    stadium_template = pd.read_csv('.\static\stadium_2.csv')
+    stadium_template = pd.read_csv('.\Static\stadium_2.csv')
 
     y_offset = 275
     excluded_segments = ['outfield_inner']
