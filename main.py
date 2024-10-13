@@ -161,7 +161,7 @@ if player:
 
     filtered_spraychart_df = play_by_play_df.loc[(play_by_play_df['matchup.pitcher.id'] == player) & (play_by_play_df['trajectory'].notnull())]
     plot_seasons_list = filtered_spraychart_df['season'].unique().tolist()
-    plot_seasons_list.reverse()
+    # plot_seasons_list.reverse()
 
     col1, col2 = st.columns([1, 3])
 
