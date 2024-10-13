@@ -71,6 +71,8 @@ for file in files:
     else:
         players_list = players_df['player.id'].unique().tolist()
         players_df = pd.concat([players_df, df.loc[~df['player.id'].isin(players_list)]], ignore_index=True)
+
+players_df.loc[players_df['team.abbreviation'] == 'ORI', 'team.abbreviation'] = 'ANZ'
    
 player_options, teams = players_breakdown(players_df.sort_values(by=['player.lastName']).sort_values(by=['season'], ascending=[False]))
 
