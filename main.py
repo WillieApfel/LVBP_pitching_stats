@@ -58,7 +58,7 @@ _dir = './Static/Data/Players/'
 
 # List all files in the directory
 files = os.listdir(_dir)
-files.reverse()
+# files.reverse()
 
 players_df = pd.DataFrame()
 players_list = []
