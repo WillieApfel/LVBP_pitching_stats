@@ -46,7 +46,7 @@ st.markdown(
     """
     <style>
     .main {
-        padding-left: 5%;
+        padding-left: 20%;
         padding-right: 5%;
     }
     </style>
