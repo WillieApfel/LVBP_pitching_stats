@@ -10,7 +10,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt # type: ignore
 from matplotlib.patches import FancyBboxPatch # type: ignore
 # import pybaseball as pyb # type: ignore
-from pybaseball import statcast_batter, spraychart  # type: ignore
+# from pybaseball import statcast_batter, spraychart  # type: ignore
 
 # Importar todas las funciones desde utils.py
 from functions import *
