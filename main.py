@@ -100,7 +100,7 @@ col1, col2 = st.columns([3, 1])
 
 # Add components to the first column (wide view)
 with col1:
-    st.header(':baseball: LVBP 2023 Pitching Stats') 
+    st.header(':baseball: LVBP Pitching Stats') 
 
 # Add components to the second column (narrow view)
 with col2:
