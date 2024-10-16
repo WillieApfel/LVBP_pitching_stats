@@ -19,7 +19,7 @@ def players_breakdown(players_df):
 
     return player_options, teams
 
-def show_spraychart(hit_colors, plot_data, title):
+def show_spraychart(hit_colors, plot_data, title, theme):
     fig, ax = plt.subplots()
 
     # Extract data for scatter plot
@@ -39,20 +39,24 @@ def show_spraychart(hit_colors, plot_data, title):
             segment_data = stadium_template[stadium_template['segment'] == segment_name]
             plt.plot(segment_data['x'], segment_data['y'], linewidth=2, zorder=1, color='#8CB5CB', alpha=0.5)
 
-
     # Plot each event type with a different color
     for event_type in event_types.unique():
         if event_type == 'out':
             # subset = lefties[lefties['result.eventType'] == event_type]
-            subset = plot_data[~plot_data['result.eventType'].isin(['single', 'double', 'triple', 'home_run', 'error'])]
+            subset = plot_data[~plot_data['result.eventType'].isin(['single', 'double', 'triple', 'home_run', 'field_error'])]
         else:
             subset = plot_data[plot_data['result.eventType'] == event_type]
-
-        ax.scatter(subset['coordinates.coordX'], subset['coordinates.coordY'], label=event_type.replace('_', ' ').title(), color=hit_colors.get(event_type, 'black'))
-
+    
+        ax.scatter(
+            subset['coordinates.coordX'], 
+            subset['coordinates.coordY'], 
+            label=event_type.replace('field_', '').replace('_', ' ').title(), 
+            color=hit_colors.get(event_type, 'black'), 
+            edgecolors='black'
+        )
 
     # Add title and labels
-    ax.set_title(title, color='white')
+    ax.set_title(title, color=theme['textColor'])
 
     # Hide axes
     ax.axis('off')
@@ -70,8 +74,8 @@ def show_spraychart(hit_colors, plot_data, title):
     ordered_labels = [event for event in order if event in labels]
     ax.legend(ordered_handles, ordered_labels, title='Event Type')
 
-    fig.patch.set_facecolor('#0E1117')
-    ax.set_facecolor('#0E1117') 
+    fig.patch.set_facecolor(theme['backgroundColor'])
+    ax.set_facecolor(theme['backgroundColor']) 
 
     # Add border to the plot
     fig.patch.set_edgecolor('#8CB5CB')

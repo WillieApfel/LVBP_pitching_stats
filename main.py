@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt # type: ignore
 from matplotlib.patches import FancyBboxPatch # type: ignore
 # import pybaseball as pyb # type: ignore
 # from pybaseball import statcast_batter, spraychart  # type: ignore
+from streamlit_theme import st_theme
 
 # Importar todas las funciones desde utils.py
 from functions import *
@@ -158,7 +159,7 @@ if player:
         'triple': 'orange',
         'home_run': 'red',
         'out': 'grey',
-        'error': 'grey'
+        'field_error': 'white'
     }
 
     filtered_spraychart_df = play_by_play_df.loc[(play_by_play_df['matchup.pitcher.id'] == player) & (play_by_play_df['trajectory'].notnull())]
@@ -198,9 +199,11 @@ if player:
     lefties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'L']
     righties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'R']
 
+    theme = st_theme()
+
     with col1:
-        show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs LHBs')
+        show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs LHBs', theme)
 
     with col2:
-        show_spraychart(hit_colors, righties, f'{players_df['player.fullName'][player]} vs RHBs')
+        show_spraychart(hit_colors, righties, f'{players_df['player.fullName'][player]} vs RHBs', theme)
        
