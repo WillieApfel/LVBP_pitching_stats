@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt # type: ignore
 from matplotlib.patches import FancyBboxPatch # type: ignore
 # import pybaseball as pyb # type: ignore
 # from pybaseball import statcast_batter, spraychart  # type: ignore
-from streamlit_theme import st_theme
+# from streamlit_theme import st_theme
 
 # Importar todas las funciones desde utils.py
 from functions import *
@@ -26,7 +26,7 @@ table_fields = {
         'advanced': ['Season', 'Team', 'K/9', 'BB/9', 'K/BB', 'HR/9', 'K%', 'BB%', 'K-BB%', 'AVG', 'WHIP', 'BABIP', 'LOB%', 'FIP', 'xFIP', 'SIERA'],
         'battedBall': ['Season', 'Team', 'LD', 'GB', 'FB', 'PU', 'LD%', 'GB%', 'FB%', 'PU%', 'GB/FB', 'HR/FB', 'ERA+', 'FIP+', 'xFIP+', 'SIERA+'],
         'pitchedBall': ['Season', 'Team', 'Strikes', 'Balls', 'Pitches', 'P/IP', 'Strike%', 'Ball%', 'Whiffs', 'Contacts', 'Swings', 'Whiff%', 'SwStr%', 'CStr%', 'CWS%', 'WP', 'BK'],
-        'winProb': ['WPA', '-WPA', '+WPA']
+        'winProb': ['Season', 'Team', 'WPA', '-WPA', '+WPA']
     }
 }
 
@@ -204,7 +204,28 @@ if player:
     lefties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'L']
     righties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'R']
 
-    theme = st_theme()
+    # theme = st_theme()
+    theme = {
+        "primaryColor":"#ff4b4b",
+        "backgroundColor":"#0e1117",
+        "secondaryBackgroundColor":"#262730",
+        "textColor":"#fafafa",
+        "base":"dark",
+        "font":"\"Source Sans Pro\", sans-serif",
+        "linkText":"hsla(209, 100%, 59%, 1)",
+        "fadedText05":"rgba(250, 250, 250, 0.1)",
+        "fadedText10":"rgba(250, 250, 250, 0.2)",
+        "fadedText20":"rgba(250, 250, 250, 0.3)",
+        "fadedText40":"rgba(250, 250, 250, 0.4)",
+        "fadedText60":"rgba(250, 250, 250, 0.6)",
+        "bgMix":"rgba(26, 28, 36, 1)",
+        "darkenedBgMix100":"hsla(228, 16%, 72%, 1)",
+        "darkenedBgMix25":"rgba(172, 177, 195, 0.25)",
+        "darkenedBgMix15":"rgba(172, 177, 195, 0.15)",
+        "lightenedBg05":"hsla(220, 24%, 10%, 1)",
+        "borderColor":"rgba(250, 250, 250, 0.2)",
+        "borderColorLight":"rgba(250, 250, 250, 0.1)"
+    }
 
     with col1:
         show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs LHBs', theme)

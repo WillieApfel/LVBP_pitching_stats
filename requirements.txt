@@ -1,5 +1,5 @@
 streamlit
-streamlit-theme
+streamlit_theme
 pandas
 numpy
 datetime
