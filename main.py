@@ -17,7 +17,7 @@ from streamlit_theme import st_theme
 from functions import *
 
 # Settings
-season = '2024'
+season = '2023'
 statGroup = 'pitching'
 
 table_fields = {
@@ -25,7 +25,8 @@ table_fields = {
         'standard': ['Season', 'Team', 'W', 'L', 'ERA', 'G', 'GS', 'QS', 'CG', 'SHO', 'SV', 'SVo', 'HLD', 'BS', 'IP', 'BF', 'H', 'R', 'ER', 'HR', 'BB', 'IBB', 'HBP', 'SO'],
         'advanced': ['Season', 'Team', 'K/9', 'BB/9', 'K/BB', 'HR/9', 'K%', 'BB%', 'K-BB%', 'AVG', 'WHIP', 'BABIP', 'LOB%', 'FIP', 'xFIP', 'SIERA'],
         'battedBall': ['Season', 'Team', 'LD', 'GB', 'FB', 'PU', 'LD%', 'GB%', 'FB%', 'PU%', 'GB/FB', 'HR/FB', 'ERA+', 'FIP+', 'xFIP+', 'SIERA+'],
-        'pitchedBall': ['Season', 'Team', 'Strikes', 'Balls', 'Pitches', 'P/IP', 'Strike%', 'Ball%', 'Whiffs', 'Contacts', 'Swings', 'Whiff%', 'SwStr%', 'CStr%', 'WP', 'BK']
+        'pitchedBall': ['Season', 'Team', 'Strikes', 'Balls', 'Pitches', 'P/IP', 'Strike%', 'Ball%', 'Whiffs', 'Contacts', 'Swings', 'Whiff%', 'SwStr%', 'CStr%', 'CWS%', 'WP', 'BK'],
+        'winProb': ['WPA', '-WPA', '+WPA']
     }
 }
 
@@ -148,6 +149,10 @@ if player:
     st.markdown('')
     st.subheader("Pitched Ball Stats", divider="gray")
     st.dataframe(filtered_stat_df[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)
+
+    st.markdown('')
+    st.subheader("Win Probability", divider="gray")
+    st.dataframe(filtered_stat_df[table_fields['pitching']['winProb']], hide_index = True, use_container_width=True)
 
     st.markdown('')
     st.subheader("Spray Charts", divider="gray")
