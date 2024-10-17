@@ -17,7 +17,7 @@ from streamlit_theme import st_theme
 from functions import *
 
 # Settings
-season = '2023'
+season = '2024'
 statGroup = 'pitching'
 
 table_fields = {
