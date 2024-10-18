@@ -26,7 +26,7 @@ table_fields = {
         'advanced': ['Season', 'Team', 'K/9', 'BB/9', 'K/BB', 'HR/9', 'K%', 'BB%', 'K-BB%', 'AVG', 'WHIP', 'BABIP', 'LOB%', 'FIP', 'xFIP', 'SIERA'],
         'battedBall': ['Season', 'Team', 'LD', 'GB', 'FB', 'PU', 'LD%', 'GB%', 'FB%', 'PU%', 'GB/FB', 'HR/FB', 'ERA+', 'FIP+', 'xFIP+', 'SIERA+'],
         'pitchedBall': ['Season', 'Team', 'Strikes', 'Balls', 'Pitches', 'P/IP', 'Strike%', 'Ball%', 'Whiffs', 'Contacts', 'Swings', 'Whiff%', 'SwStr%', 'CStr%', 'CSW%', 'WP', 'BK'],
-        'winProb': ['Season', 'Team', 'WPA', '-WPA', '+WPA', 'pLI']
+        'winProb': ['Season', 'Team', 'WPA', '-WPA', '+WPA']
     }
 }
 
@@ -87,9 +87,6 @@ for file in files:
     df = pd.read_csv(f'{_dir}{file}')
     # pitching_df = pd.concat([pitching_df, df], ignore_index=True, join='outer')
     pitching_df = pd.concat([pitching_df, df], ignore_index=True, sort=False)
-
-st.write(pitching_df)
-
 
 _dir = './Static/Data/Play by play/'
 files = os.listdir(_dir)
