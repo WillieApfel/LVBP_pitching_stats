@@ -83,11 +83,12 @@ files = os.listdir(_dir)
 
 pitching_df = pd.DataFrame()
 
-st.write(pitching_df)
-
 for file in files:
     df = pd.read_csv(f'{_dir}{file}')
     pitching_df = pd.concat([pitching_df, df], ignore_index=True, join='outer')
+
+st.write(pitching_df)
+
 
 _dir = './Static/Data/Play by play/'
 files = os.listdir(_dir)
