@@ -85,7 +85,8 @@ pitching_df = pd.DataFrame()
 
 for file in files:
     df = pd.read_csv(f'{_dir}{file}')
-    pitching_df = pd.concat([pitching_df, df], ignore_index=True, join='outer')
+    # pitching_df = pd.concat([pitching_df, df], ignore_index=True, join='outer')
+    pitching_df = pd.concat([pitching_df, df], ignore_index=True, sort=False)
 
 st.write(pitching_df)
 
