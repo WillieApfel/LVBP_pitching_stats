@@ -20,6 +20,65 @@ from functions import *
 season = '2024'
 statGroup = 'pitching'
 
+teams = {
+    "692":{
+        "fullName":"Aguilas del Zulia",
+        "abbreviation":"ZUL"
+    },
+    "693":{
+        "fullName":"Cardenales de Lara",
+        "abbreviation":"LAR"
+        },
+    "694":{
+        "fullName":"Caribes de Anzoategui",
+        "abbreviation":"ANZ"
+    },
+    "695":{
+        "fullName":"Leones del Caracas",
+        "abbreviation":"CAR"
+    },
+    "696":{
+        "fullName":"Navegantes del Magallanes",
+        "abbreviation":"MAG"
+        },
+    "697":{
+        "fullName":"Bravos de Margarita",
+        "abbreviation":"MAR"
+        },
+    "698":{
+        "fullName":"Tiburones de La Guaira",
+        "abbreviation":"LAG"
+        },
+    "699":{
+        "fullName":"Tigres de Aragua",
+        "abbreviation":"ARA"
+    }
+}
+
+
+# theme = st_theme()
+theme = {
+    "primaryColor":"#ff4b4b",
+    "backgroundColor":"#0e1117",
+    "secondaryBackgroundColor":"#262730",
+    "textColor":"#fafafa",
+    "base":"dark",
+    "font":"\"Source Sans Pro\", sans-serif",
+    "linkText":"hsla(209, 100%, 59%, 1)",
+    "fadedText05":"rgba(250, 250, 250, 0.1)",
+    "fadedText10":"rgba(250, 250, 250, 0.2)",
+    "fadedText20":"rgba(250, 250, 250, 0.3)",
+    "fadedText40":"rgba(250, 250, 250, 0.4)",
+    "fadedText60":"rgba(250, 250, 250, 0.6)",
+    "bgMix":"rgba(26, 28, 36, 1)",
+    "darkenedBgMix100":"hsla(228, 16%, 72%, 1)",
+    "darkenedBgMix25":"rgba(172, 177, 195, 0.25)",
+    "darkenedBgMix15":"rgba(172, 177, 195, 0.15)",
+    "lightenedBg05":"hsla(220, 24%, 10%, 1)",
+    "borderColor":"rgba(250, 250, 250, 0.2)",
+    "borderColorLight":"rgba(250, 250, 250, 0.1)"
+}
+
 table_fields = {
     'pitching': {
         'standard': ['Season', 'Team', 'W', 'L', 'ERA', 'G', 'GS', 'QS', 'CG', 'SHO', 'SV', 'SVo', 'HLD', 'BS', 'IP', 'BF', 'H', 'R', 'ER', 'HR', 'BB', 'IBB', 'HBP', 'SO'],
@@ -60,7 +119,7 @@ _dir = './Static/Data/Players/'
 
 # List all files in the directory
 files = os.listdir(_dir)
-# files.reverse()
+files.sort(reverse=True)
 
 players_df = pd.DataFrame()
 players_list = []
@@ -80,6 +139,7 @@ player_options, teams = players_breakdown(players_df.sort_values(by=['season', '
 
 _dir = './Static/Data/Stats/'
 files = os.listdir(_dir)
+files.sort(reverse=True)
 
 pitching_df = pd.DataFrame()
 
@@ -90,6 +150,7 @@ for file in files:
 
 _dir = './Static/Data/Play by play/'
 files = os.listdir(_dir)
+files.sort(reverse=True)
 
 play_by_play_df = pd.DataFrame()
 
@@ -97,6 +158,17 @@ for file in files:
     df = pd.read_csv(f'{_dir}{file}')
     df['season'] = file.replace('.csv', '')
     play_by_play_df = pd.concat([play_by_play_df, df], ignore_index=True)
+
+_dir = './Static/Data/Team/'
+files = os.listdir(_dir)
+files.sort(reverse=True)
+
+team_stats_df = pd.DataFrame()
+
+for file in files:
+    df = pd.read_csv(f'{_dir}{file}')
+    df['season'] = file.replace('.csv', '')
+    team_stats_df = pd.concat([team_stats_df, df], ignore_index=True)
 
 
 col1, col2 = st.columns([3, 1])
@@ -117,11 +189,18 @@ with col2:
 
 st.divider()
 
+# st.write(pitching_df)
+
 players_df.set_index(['player.id'], inplace = True)
+pitching_df = pitching_stats_format(pitching_df)
+team_stats_df = pitching_stats_format(team_stats_df)
+team_stats_df['Team'] = team_stats_df['team.id'].map(lambda x: teams[x]['fullName'])
+
 
 if player:
 
     filtered_stat_df = pitching_df.loc[pitching_df['player.id'] == player]
+    filtered_stat_df = filtered_stat_df.astype(str)
 
     # st.write(player)
 
@@ -205,32 +284,52 @@ if player:
     lefties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'L']
     righties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'R']
 
-    # theme = st_theme()
-    theme = {
-        "primaryColor":"#ff4b4b",
-        "backgroundColor":"#0e1117",
-        "secondaryBackgroundColor":"#262730",
-        "textColor":"#fafafa",
-        "base":"dark",
-        "font":"\"Source Sans Pro\", sans-serif",
-        "linkText":"hsla(209, 100%, 59%, 1)",
-        "fadedText05":"rgba(250, 250, 250, 0.1)",
-        "fadedText10":"rgba(250, 250, 250, 0.2)",
-        "fadedText20":"rgba(250, 250, 250, 0.3)",
-        "fadedText40":"rgba(250, 250, 250, 0.4)",
-        "fadedText60":"rgba(250, 250, 250, 0.6)",
-        "bgMix":"rgba(26, 28, 36, 1)",
-        "darkenedBgMix100":"hsla(228, 16%, 72%, 1)",
-        "darkenedBgMix25":"rgba(172, 177, 195, 0.25)",
-        "darkenedBgMix15":"rgba(172, 177, 195, 0.15)",
-        "lightenedBg05":"hsla(220, 24%, 10%, 1)",
-        "borderColor":"rgba(250, 250, 250, 0.2)",
-        "borderColorLight":"rgba(250, 250, 250, 0.1)"
-    }
-
     with col1:
         show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs LHBs', theme)
 
     with col2:
         show_spraychart(hit_colors, righties, f'{players_df['player.fullName'][player]} vs RHBs', theme)
-       
+
+else:
+    
+    seasons_list = team_stats_df['Season'].unique().tolist()
+
+    col1, col2 = st.columns([1, 3])
+
+    with col1:
+
+        if len(seasons_list) == 1:
+            season_selected = st.selectbox(
+                label = "Select a Season",
+                options = seasons_list,
+                index = 0,
+                placeholder = "type the name of the player...",
+                disabled=True
+            )
+        else:
+            season_selected = st.selectbox(
+                label = "Select a Season",
+                options = seasons_list,
+                index = 0,
+                placeholder = "type the name of the player...",
+                disabled=False
+            )
+            
+    filtered_colective_stats = team_stats_df.loc[team_stats_df['Season'] == season_selected].sort_values(by=['Season', 'ERA'], ascending=[True, True])
+    filtered_colective_stats = filtered_colective_stats.astype(str)
+
+    st.markdown('')
+    st.subheader("Standard Stats", divider="gray")
+    st.dataframe(filtered_colective_stats[table_fields['pitching']['standard']], hide_index = True, use_container_width=True)
+
+    st.markdown('')
+    st.subheader("Advanced Stats", divider="gray")
+    st.dataframe(filtered_colective_stats[table_fields['pitching']['advanced']], hide_index = True, use_container_width=True)
+
+    st.markdown('')
+    st.subheader("Batted Ball Stats", divider="gray")
+    st.dataframe(filtered_colective_stats[table_fields['pitching']['battedBall']], hide_index = True, use_container_width=True)
+
+    st.markdown('')
+    st.subheader("Pitched Ball Stats", divider="gray")
+    st.dataframe(filtered_colective_stats[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)

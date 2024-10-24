@@ -19,6 +19,52 @@ def players_breakdown(players_df):
 
     return player_options, teams
 
+
+@st.cache_data
+def pitching_stats_format(stats):
+
+    stats['ERA'] =  round( stats['ERA'] , 2 ).apply(lambda x: f'{x:.2f}')
+    stats['WHIP'] = round( stats['WHIP'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['AVG'] = round( stats['AVG'] , 3 ).apply(lambda x: f"{x:.3f}".lstrip('0'))
+    stats['K/9'] = round( stats['K/9'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['BB/9'] = round( stats['BB/9'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['HR/9'] = round( stats['HR/9'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['K/BB'] = round( stats['K/BB'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['K%'] = round( stats['K%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['BB%'] = round(stats['BB%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['K-BB%'] = round( stats['K-BB%'] , 1 ).apply(lambda x: f"{x:.1f}")
+
+    stats['BABIP'] = round( stats['BABIP'] , 2 ).apply(lambda x: f"{x:.3f}".lstrip('0'))
+    stats['LOB%'] = round( stats['LOB%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['FIP'] = round( stats['FIP'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['xFIP'] = round( stats['xFIP'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['SIERA'] = round( stats['SIERA'] , 2 ).apply(lambda x: f"{x:.2f}")
+
+    stats['ERA+'] = round( stats['ERA+'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['FIP+'] = round( stats['FIP+'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['xFIP+'] = round( stats['xFIP+'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['SIERA+'] = round( stats['SIERA+'] , 0 ).apply(lambda x: f"{x:.0f}")
+
+    stats['GB/FB'] = round( stats['GB/FB'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['LD%'] = round( stats['LD%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['GB%'] = round( stats['GB%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['FB%'] = round( stats['FB%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['PU%'] = round( stats['PU%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['HR/FB'] = round( stats['HR/FB'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['P/IP'] = round( stats['P/IP'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['Strike%'] = round( stats['Strike%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['Ball%'] = round( stats['Ball%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['Whiff%'] = round( stats['Whiff%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['SwStr%'] = round( stats['SwStr%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['CStr%'] = round( stats['CStr%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['CSW%'] = round( stats['CSW%'] , 1 ).apply(lambda x: f"{x:.1f}")
+
+    stats['WPA'] = round( stats['WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
+    stats['-WPA'] = round( stats['-WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
+    stats['+WPA'] = round( stats['+WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
+
+    return stats
+
 def show_spraychart(hit_colors, plot_data, title, theme):
     fig, ax = plt.subplots()
 
