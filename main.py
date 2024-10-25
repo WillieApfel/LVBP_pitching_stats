@@ -81,11 +81,11 @@ theme = {
 
 table_fields = {
     'pitching': {
-        'standard': ['Season', 'Team', 'W', 'L', 'ERA', 'G', 'GS', 'QS', 'CG', 'SHO', 'SV', 'SVo', 'HLD', 'BS', 'IP', 'BF', 'H', 'R', 'ER', 'HR', 'BB', 'IBB', 'HBP', 'SO'],
+        'standard': ['Season', 'Team', 'W', 'L', 'ERA', 'G', 'GS', 'QS', 'CG', 'SV', 'SVo', 'HLD', 'BS', 'IP', 'BF', 'H', 'R', 'ER', 'HR', 'BB', 'IBB', 'HBP', 'SO'],
         'advanced': ['Season', 'Team', 'K/9', 'BB/9', 'K/BB', 'HR/9', 'K%', 'BB%', 'K-BB%', 'AVG', 'WHIP', 'BABIP', 'LOB%', 'FIP', 'xFIP', 'SIERA'],
         'battedBall': ['Season', 'Team', 'LD', 'GB', 'FB', 'PU', 'LD%', 'GB%', 'FB%', 'PU%', 'GB/FB', 'HR/FB', 'ERA+', 'FIP+', 'xFIP+', 'SIERA+'],
         'pitchedBall': ['Season', 'Team', 'Strikes', 'Balls', 'Pitches', 'P/IP', 'Strike%', 'Ball%', 'Whiffs', 'Contacts', 'Swings', 'Whiff%', 'SwStr%', 'CStr%', 'CSW%', 'WP', 'BK'],
-        'winProb': ['Season', 'Team', 'WPA', '-WPA', '+WPA']
+        'winProb': ['Season', 'Team', 'WPA', '-WPA', '+WPA', 'pLI']
     }
 }
 
@@ -251,7 +251,7 @@ if player:
     plot_seasons_list = filtered_spraychart_df['season'].unique().tolist()
     # plot_seasons_list.reverse()
 
-    col1, col2 = st.columns([1, 3])
+    col1, col2 = st.columns([1, 4])
 
     # Add components to the first column (wide view)
     with col1:
@@ -294,7 +294,7 @@ else:
     
     seasons_list = team_stats_df['Season'].unique().tolist()
 
-    col1, col2 = st.columns([1, 3])
+    col1, col2 = st.columns([1, 6])
 
     with col1:
 
