@@ -39,6 +39,7 @@ def pitching_stats_format(stats):
     stats['FIP'] = round( stats['FIP'] , 2 ).apply(lambda x: f"{x:.2f}")
     stats['xFIP'] = round( stats['xFIP'] , 2 ).apply(lambda x: f"{x:.2f}")
     stats['SIERA'] = round( stats['SIERA'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['ERA-FIP'] = round( stats['ERA-FIP'] , 2 ).apply(lambda x: f"{x:.2f}")
 
     stats['ERA+'] = round( stats['ERA+'] , 0 ).apply(lambda x: f"{x:.0f}")
     stats['FIP+'] = round( stats['FIP+'] , 0 ).apply(lambda x: f"{x:.0f}")

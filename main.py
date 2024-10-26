@@ -82,7 +82,7 @@ theme = {
 table_fields = {
     'pitching': {
         'standard': ['Season', 'Team', 'W', 'L', 'ERA', 'G', 'GS', 'QS', 'CG', 'SV', 'SVo', 'HLD', 'BS', 'IP', 'BF', 'H', 'R', 'ER', 'HR', 'BB', 'IBB', 'HBP', 'SO'],
-        'advanced': ['Season', 'Team', 'K/9', 'BB/9', 'K/BB', 'HR/9', 'K%', 'BB%', 'K-BB%', 'AVG', 'WHIP', 'BABIP', 'LOB%', 'FIP', 'xFIP', 'SIERA'],
+        'advanced': ['Season', 'Team', 'K/9', 'BB/9', 'K/BB', 'HR/9', 'K%', 'BB%', 'K-BB%', 'AVG', 'WHIP', 'BABIP', 'LOB%', 'FIP', 'ERA-FIP', 'xFIP', 'SIERA'],
         'battedBall': ['Season', 'Team', 'LD', 'GB', 'FB', 'PU', 'LD%', 'GB%', 'FB%', 'PU%', 'GB/FB', 'HR/FB', 'ERA+', 'FIP+', 'xFIP+', 'SIERA+'],
         'pitchedBall': ['Season', 'Team', 'Strikes', 'Balls', 'Pitches', 'P/IP', 'Strike%', 'Ball%', 'Whiffs', 'Contacts', 'Swings', 'Whiff%', 'SwStr%', 'CStr%', 'CSW%', 'WP', 'BK'],
         'winProb': ['Season', 'Team', 'WPA', '-WPA', '+WPA', 'pLI']
