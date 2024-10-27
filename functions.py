@@ -63,6 +63,15 @@ def pitching_stats_format(stats):
     stats['WPA'] = round( stats['WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
     stats['-WPA'] = round( stats['-WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
     stats['+WPA'] = round( stats['+WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
+    stats['pLI'] = round( stats['pLI'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['inLI'] = round( stats['inLI'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['gmLI'] = round( stats['gmLI'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['exLI'] = round( stats['exLI'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['Pulls'] = round( stats['Pulls'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['WPA/LI'] = round( stats['WPA/LI'] , 3 ).apply(lambda x: f"{x:.3f}")
+    stats['Clutch'] = round( stats['Clutch'] , 3 ).apply(lambda x: f"{x:.3f}")
+    stats['SD'] = round( stats['SD'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['MD'] = round( stats['MD'] , 0 ).apply(lambda x: f"{x:.0f}")
 
     return stats
 
