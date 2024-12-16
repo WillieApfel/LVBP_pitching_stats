@@ -200,9 +200,12 @@ team_stats_df['Team'] = team_stats_df['team.id'].map(lambda x: teams[x]['fullNam
 if player:
 
     filtered_stat_df = pitching_df.loc[pitching_df['player.id'] == player]
-    filtered_stat_df = filtered_stat_df.astype(str)
 
-    # st.write(player)
+    standard_ = filtered_stat_df[table_fields['pitching']['standard']]
+    advanced_ = filtered_stat_df[table_fields['pitching']['advanced']]
+    battedBall_ = filtered_stat_df[table_fields['pitching']['battedBall']]
+    pitchedBall_ = filtered_stat_df[table_fields['pitching']['pitchedBall']]
+    winProb_ = filtered_stat_df[table_fields['pitching']['winProb']]
 
     st.subheader("Player Information", divider="gray")
 
@@ -216,23 +219,28 @@ if player:
 
     st.markdown('')
     st.subheader("Standard Stats", divider="gray")
-    st.dataframe(filtered_stat_df[table_fields['pitching']['standard']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['standard']], hide_index = True, use_container_width=True)
+    pitching_stats_formater(standard_)
 
     st.markdown('')
     st.subheader("Advanced Stats", divider="gray")
-    st.dataframe(filtered_stat_df[table_fields['pitching']['advanced']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['advanced']], hide_index = True, use_container_width=True)
+    pitching_stats_formater(advanced_)
 
     st.markdown('')
     st.subheader("Batted Ball Stats", divider="gray")
-    st.dataframe(filtered_stat_df[table_fields['pitching']['battedBall']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['battedBall']], hide_index = True, use_container_width=True)
+    pitching_stats_formater(battedBall_)
 
     st.markdown('')
     st.subheader("Pitched Ball Stats", divider="gray")
-    st.dataframe(filtered_stat_df[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)
+    pitching_stats_formater(pitchedBall_)
 
     st.markdown('')
     st.subheader("Win Probability", divider="gray")
-    st.dataframe(filtered_stat_df[table_fields['pitching']['winProb']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['winProb']], hide_index = True, use_container_width=True)
+    pitching_stats_formater(winProb_)
 
     st.markdown('')
     st.subheader("Spray Charts", divider="gray")
@@ -247,36 +255,33 @@ if player:
         'field_error': 'white'
     }
 
-    filtered_spraychart_df = play_by_play_df.loc[(play_by_play_df['matchup.pitcher.id'] == player) & (play_by_play_df['trajectory'].notnull())]
-    plot_seasons_list = filtered_spraychart_df['season'].unique().tolist()
-    # plot_seasons_list.reverse()
-
     col1, col2 = st.columns([1, 4])
+
+    filtered_spraychart_df = play_by_play_df.loc[(play_by_play_df['matchup.pitcher.id'] == player) & (play_by_play_df['trajectory'].notnull())]
+    seasons_spraychart = filtered_spraychart_df['Season'].unique().tolist()
+    seasons_spraychart.sort(reverse=True)
 
     # Add components to the first column (wide view)
     with col1:
 
-        if len(plot_seasons_list) == 1:
-            season_plot = st.selectbox(
+        if len(seasons_spraychart) == 1:
+            season_spraychart = st.selectbox(
                 label = "Select a Season",
-                options = plot_seasons_list,
+                options = seasons_spraychart,
                 index = 0,
                 placeholder = "type the name of the player...",
                 disabled=True
             )
         else:
-            season_plot = st.selectbox(
+            season_spraychart = st.selectbox(
                 label = "Select a Season",
-                options = plot_seasons_list,
+                options = seasons_spraychart,
                 index = 0,
                 placeholder = "type the name of the player...",
                 disabled=False
             )
 
-    # Add components to the second column (narrow view)
-    # with col2:
-
-    filtered_spraychart_df_1 = filtered_spraychart_df.loc[filtered_spraychart_df['season'] == season_plot]
+    filtered_spraychart_df_1 = filtered_spraychart_df.loc[filtered_spraychart_df['season'] == f'{season_spraychart}']
 
     # Create scatter plot
     col1, col2 = st.columns([1, 1])
@@ -291,8 +296,10 @@ if player:
         show_spraychart(hit_colors, righties, f'{players_df['player.fullName'][player]} vs RHBs', theme)
 
 else:
-    
+
     seasons_list = team_stats_df['Season'].unique().tolist()
+    seasons_list.sort(reverse=True)
+
 
     col1, col2 = st.columns([1, 6])
 
@@ -316,20 +323,29 @@ else:
             )
             
     filtered_colective_stats = team_stats_df.loc[team_stats_df['Season'] == season_selected].sort_values(by=['Season', 'ERA'], ascending=[True, True])
-    filtered_colective_stats = filtered_colective_stats.astype(str)
+
+    standard_ = filtered_colective_stats[table_fields['pitching']['standard']]
+    advanced_ = filtered_colective_stats[table_fields['pitching']['advanced']]
+    battedBall_ = filtered_colective_stats[table_fields['pitching']['battedBall']]
+    pitchedBall_ = filtered_colective_stats[table_fields['pitching']['advanced']]
 
     st.markdown('')
     st.subheader("Standard Stats", divider="gray")
-    st.dataframe(filtered_colective_stats[table_fields['pitching']['standard']], hide_index = True, use_container_width=True)
+    # st.dataframe(standard_, hide_index = True, use_container_width=True)
+    pitching_stats_formater(standard_)
 
     st.markdown('')
     st.subheader("Advanced Stats", divider="gray")
-    st.dataframe(filtered_colective_stats[table_fields['pitching']['advanced']], hide_index = True, use_container_width=True)
+    # st.dataframe(advanced_, hide_index = False, use_container_width=True)
+    pitching_stats_formater(advanced_)
+
 
     st.markdown('')
     st.subheader("Batted Ball Stats", divider="gray")
-    st.dataframe(filtered_colective_stats[table_fields['pitching']['battedBall']], hide_index = True, use_container_width=True)
+    # st.dataframe(battedBall_, hide_index = True, use_container_width=True)
+    pitching_stats_formater(battedBall_)
 
     st.markdown('')
     st.subheader("Pitched Ball Stats", divider="gray")
-    st.dataframe(filtered_colective_stats[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)
+    # st.dataframe(pitchedBall_, hide_index = True, use_container_width=True)
+    pitching_stats_formater(pitchedBall_)

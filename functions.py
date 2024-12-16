@@ -23,57 +23,117 @@ def players_breakdown(players_df):
 @st.cache_data
 def pitching_stats_format(stats):
 
-    stats['ERA'] =  round( stats['ERA'] , 2 ).apply(lambda x: f'{x:.2f}')
-    stats['WHIP'] = round( stats['WHIP'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['AVG'] = round( stats['AVG'] , 3 ).apply(lambda x: f"{x:.3f}".lstrip('0'))
-    stats['K/9'] = round( stats['K/9'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['BB/9'] = round( stats['BB/9'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['HR/9'] = round( stats['HR/9'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['K/BB'] = round( stats['K/BB'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['K%'] = round( stats['K%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['BB%'] = round(stats['BB%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['K-BB%'] = round( stats['K-BB%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['ERA'] =  round( stats['ERA'] , 2 )
+    stats['IP'] =  round( stats['IP'] , 1 )
+    stats['WHIP'] = round( stats['WHIP'] , 2 )
+    stats['AVG'] = round( stats['AVG'] , 3 )
+    stats['K/9'] = round( stats['K/9'] , 2 )
+    stats['BB/9'] = round( stats['BB/9'] , 2 )
+    stats['HR/9'] = round( stats['HR/9'] , 2 )
+    stats['K/BB'] = round( stats['K/BB'] , 2 )
+    stats['K%'] = round( stats['K%'] , 1 )
+    stats['BB%'] = round(stats['BB%'] , 1 )
+    stats['K-BB%'] = round( stats['K-BB%'] , 1 )
 
-    stats['BABIP'] = round( stats['BABIP'] , 2 ).apply(lambda x: f"{x:.3f}".lstrip('0'))
-    stats['LOB%'] = round( stats['LOB%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['FIP'] = round( stats['FIP'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['xFIP'] = round( stats['xFIP'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['SIERA'] = round( stats['SIERA'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['ERA-FIP'] = round( stats['ERA-FIP'] , 2 ).apply(lambda x: f"{x:.2f}")
+    stats['BABIP'] = round( stats['BABIP'] , 3 )
+    stats['LOB%'] = round( stats['LOB%'] , 1 )
+    stats['FIP'] = round( stats['FIP'] , 2 )
+    stats['xFIP'] = round( stats['xFIP'] , 2 )
+    stats['SIERA'] = round( stats['SIERA'] , 2 )
+    stats['ERA-FIP'] = round( stats['ERA-FIP'] , 2 )
 
-    stats['ERA+'] = round( stats['ERA+'] , 0 ).apply(lambda x: f"{x:.0f}")
-    stats['FIP+'] = round( stats['FIP+'] , 0 ).apply(lambda x: f"{x:.0f}")
-    stats['xFIP+'] = round( stats['xFIP+'] , 0 ).apply(lambda x: f"{x:.0f}")
-    stats['SIERA+'] = round( stats['SIERA+'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['ERA+'] = round( stats['ERA+'] , 0 )
+    stats['FIP+'] = round( stats['FIP+'] , 0 )
+    stats['xFIP+'] = round( stats['xFIP+'] , 0 )
+    stats['SIERA+'] = round( stats['SIERA+'] , 0 )
 
-    stats['GB/FB'] = round( stats['GB/FB'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['LD%'] = round( stats['LD%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['GB%'] = round( stats['GB%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['FB%'] = round( stats['FB%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['PU%'] = round( stats['PU%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['HR/FB'] = round( stats['HR/FB'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['P/IP'] = round( stats['P/IP'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['Strike%'] = round( stats['Strike%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['Ball%'] = round( stats['Ball%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['Whiff%'] = round( stats['Whiff%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['SwStr%'] = round( stats['SwStr%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['CStr%'] = round( stats['CStr%'] , 1 ).apply(lambda x: f"{x:.1f}")
-    stats['CSW%'] = round( stats['CSW%'] , 1 ).apply(lambda x: f"{x:.1f}")
+    stats['GB/FB'] = round( stats['GB/FB'] , 2 )
+    stats['LD%'] = round( stats['LD%'] , 1 )
+    stats['GB%'] = round( stats['GB%'] , 1 )
+    stats['FB%'] = round( stats['FB%'] , 1 )
+    stats['PU%'] = round( stats['PU%'] , 1 )
+    stats['HR/FB'] = round( stats['HR/FB'] , 2 )
+    stats['P/IP'] = round( stats['P/IP'] , 2 )
+    stats['Strike%'] = round( stats['Strike%'] , 1 )
+    stats['Ball%'] = round( stats['Ball%'] , 1 )
+    stats['Whiff%'] = round( stats['Whiff%'] , 1 )
+    stats['SwStr%'] = round( stats['SwStr%'] , 1 )
+    stats['CStr%'] = round( stats['CStr%'] , 1 )
+    stats['CSW%'] = round( stats['CSW%'] , 1 )
 
-    stats['WPA'] = round( stats['WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
-    stats['-WPA'] = round( stats['-WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
-    stats['+WPA'] = round( stats['+WPA'] , 3 ).apply(lambda x: f"{x:.3f}")
-    stats['pLI'] = round( stats['pLI'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['inLI'] = round( stats['inLI'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['gmLI'] = round( stats['gmLI'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['exLI'] = round( stats['exLI'] , 2 ).apply(lambda x: f"{x:.2f}")
-    stats['Pulls'] = round( stats['Pulls'] , 0 ).apply(lambda x: f"{x:.0f}")
-    stats['WPA/LI'] = round( stats['WPA/LI'] , 3 ).apply(lambda x: f"{x:.3f}")
-    stats['Clutch'] = round( stats['Clutch'] , 3 ).apply(lambda x: f"{x:.3f}")
-    stats['SD'] = round( stats['SD'] , 0 ).apply(lambda x: f"{x:.0f}")
-    stats['MD'] = round( stats['MD'] , 0 ).apply(lambda x: f"{x:.0f}")
+    stats['WPA'] = round( stats['WPA'] , 3 )
+    stats['-WPA'] = round( stats['-WPA'] , 3 )
+    stats['+WPA'] = round( stats['+WPA'] , 3 )
+    stats['pLI'] = round( stats['pLI'] , 2 )
+    stats['inLI'] = round( stats['inLI'] , 2 )
+    stats['gmLI'] = round( stats['gmLI'] , 2 )
+    stats['exLI'] = round( stats['exLI'] , 2 )
+    stats['Pulls'] = round( stats['Pulls'] , 0 )
+    stats['WPA/LI'] = round( stats['WPA/LI'] , 3 )
+    stats['Clutch'] = round( stats['Clutch'] , 3 )
+    stats['SD'] = round( stats['SD'] , 0 )
+    stats['MD'] = round( stats['MD'] , 0 )
 
     return stats
+
+@st.cache_data
+def pitching_stats_formater(stats):
+
+    # Define custom formatting function
+    def custom_format(value):
+        return f'{value:.3f}'.lstrip('0')
+
+    styled_df = stats.style.format({
+        'ERA': '{:.2f}',
+        'IP': '{:.1f}',
+        'WHIP': '{:.2f}',
+        'AVG': custom_format,
+        'K/9': '{:.2f}',
+        'BB/9': '{:.2f}',
+        'HR/9': '{:.2f}',
+        'K/BB': '{:.2f}',
+        'K%': '{:.1f}',
+        'BB%': '{:.1f}',
+        'K-BB%': '{:.1f}',
+        'BABIP': custom_format,
+        'LOB%': '{:.1f}',
+        'FIP': '{:.2f}',
+        'xFIP': '{:.2f}',
+        'SIERA': '{:.2f}',
+        'ERA-FIP': '{:.2f}',
+        'ERA+': '{:.0f}',
+        'FIP+': '{:.0f}',
+        'xFIP+': '{:.0f}',
+        'SIERA+': '{:.0f}',
+        'GB/FB': '{:.2f}',
+        'LD%': '{:.1f}',
+        'GB%': '{:.1f}',
+        'FB%': '{:.1f}',
+        'PU%': '{:.1f}',
+        'HR/FB': '{:.2f}',
+        'P/IP': '{:.2f}',
+        'Strike%': '{:.1f}',
+        'Ball%': '{:.1f}',
+        'Whiff%': '{:.1f}',
+        'SwStr%': '{:.1f}',
+        'CStr%': '{:.1f}',
+        'CSW%': '{:.1f}',
+        'WPA': '{:.3f}',
+        '-WPA': '{:.3f}',
+        '+WPA': '{:.3f}',
+        'pLI': '{:.2f}',
+        'inLI': '{:.2f}',
+        'gmLI': '{:.2f}',
+        'exLI': '{:.2f}',
+        'Pulls': '{:.0f}',
+        'WPA/LI': '{:.3f}',
+        'Clutch': '{:.3f}',
+        'SD': '{:.0f}',
+        'MD': '{:.0f}'
+    })
+
+    st.dataframe(styled_df, hide_index = True, use_container_width=True)
+
 
 def show_spraychart(hit_colors, plot_data, title, theme):
     fig, ax = plt.subplots()
