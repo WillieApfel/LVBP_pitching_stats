@@ -4,6 +4,34 @@ import urllib3 # type: ignore
 import pandas as pd # type: ignore
 import csv
 import matplotlib.pyplot as plt # type: ignore
+import requests
+from bs4 import BeautifulSoup
+
+def get_headshot_url(player_id, web):
+    try:
+        url = f"https://www.{web}.com/player/{player_id}"
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Referer': f'https://www.{web}.com',
+            'Accept-Language': 'en-US,en;q=0.9'
+        }
+
+        response = requests.get(url, headers=headers, timeout=5)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            img_tag = soup.find('img', {'class': 'player-headshot'})
+
+            if img_tag:
+                return img_tag['src']
+
+        else:
+            print(f"Failed to retrieve page for player {player_id}: Status code {response.status_code}")
+
+    except requests. RequestException as e:
+        print(f"Error fetching (player_id): {e}")
+        return None
 
 @st.cache_data
 def players_breakdown(players_df):
