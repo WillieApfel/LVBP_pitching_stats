@@ -6,4 +6,4 @@ datetime
 matplotlib
 urllib3
 pillow
-BeautifulSoup
+beautifulsoup4
