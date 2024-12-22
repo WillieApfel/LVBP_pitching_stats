@@ -5,6 +5,4 @@ numpy
 datetime
 matplotlib
 urllib3
-PIL
-io
 BeautifulSoup
