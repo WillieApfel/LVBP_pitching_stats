@@ -5,4 +5,5 @@ numpy
 datetime
 matplotlib
 urllib3
+pillow
 BeautifulSoup
