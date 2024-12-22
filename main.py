@@ -9,6 +9,8 @@ import os
 from datetime import datetime
 import matplotlib.pyplot as plt # type: ignore
 from matplotlib.patches import FancyBboxPatch # type: ignore
+from PIL import Image, ImageOps # type: ignore
+from io import BytesIO
 # import pybaseball as pyb # type: ignore
 # from pybaseball import statcast_batter, spraychart  # type: ignore
 # from streamlit_theme import st_theme
@@ -209,13 +211,38 @@ if player:
 
     st.subheader("Player Information", divider="gray")
 
-    st.write(f'Full Name: {players_df['player.fullFMLName'][player]}')
-    st.write(f'Team: {players_df['team.name'][player]}')
-    st.write(f'Position: {players_df['position.type'][player]}')
-    st.write(f'B/T: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]}')
-    st.write(f'Birthdate: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')}')
-    st.write(f'Birthplace: {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
-    st.write(f'Last Active Season: {players_df['season'][player]}')
+    headshot_url = get_headshot_url(player, 'milb')
+
+    col1, col2, col3 = st.columns([1, 1, 1])
+
+    with col1:
+
+        # Mostrar la imagen con el marco en Streamlit
+        # st.image(framed_image)
+
+        frame_size = 12
+        img_w = 180
+        img_h = 260
+
+        if headshot_url != 'None':
+
+            st.markdown(
+                f"""
+                <div style="display: flex; justify-content: left;">
+                    <img src="{headshot_url}" alt="Imagen con marco" style="border: {frame_size}px solid #BEC2C4; border-radius: 5px; width: {img_w + frame_size}px; height: {img_h + frame_size}px;">
+                </div>
+                <br>
+                """,
+                unsafe_allow_html=True
+            )
+
+        st.write(f'Full Name: {players_df['player.fullFMLName'][player]}')
+        st.write(f'Team: {players_df['team.name'][player]}')
+        st.write(f'Position: {players_df['position.type'][player]}')
+        st.write(f'Bats/Throws: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]}')
+        st.write(f'Birthdate: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')}')
+        st.write(f'Birthplace: {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
+        st.write(f'Last Active Season: {players_df['season'][player]}')
 
     st.markdown('')
     st.subheader("Standard Stats", divider="gray")
