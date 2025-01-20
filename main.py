@@ -22,6 +22,15 @@ from functions import *
 season = '2024'
 statGroup = 'pitching'
 
+base_path = './Static/Data/'
+# folder = 'RS/'
+
+seasonType_dict = {
+    'Regular Season': 'RS/',
+    'Wild Card': 'WC/',
+    'Round Robin': 'RR/'
+}
+
 teams = {
     "692":{
         "fullName":"Aguilas del Zulia",
@@ -117,61 +126,73 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-_dir = './Static/Data/Players/'
+def get_data(folder):
+    _dir = base_path+folder+'Players/'
 
-# List all files in the directory
-files = os.listdir(_dir)
-files.sort(reverse=True)
+    print(_dir)
 
-players_df = pd.DataFrame()
-players_list = []
+    # List all files in the directory
+    files = os.listdir(_dir)
+    files.sort(reverse=True)
 
-for file in files:
-    df = pd.read_csv(f'{_dir}{file}')
+    players_df = pd.DataFrame()
+    players_list = []
 
-    if players_df.empty:
-        players_df = df
-    else:
-        players_list = players_df['player.id'].unique().tolist()
-        players_df = pd.concat([players_df, df.loc[~df['player.id'].isin(players_list)]], ignore_index=True)
+    for file in files:
+        df = pd.read_csv(f'{_dir}{file}')
 
-players_df.loc[players_df['team.abbreviation'] == 'ORI', 'team.abbreviation'] = 'ANZ'
-   
-player_options, teams = players_breakdown(players_df.sort_values(by=['season', 'player.lastName'], ascending=[False, True]))
+        if players_df.empty:
+            players_df = df
+        else:
+            players_list = players_df['player.id'].unique().tolist()
+            players_df = pd.concat([players_df, df.loc[~df['player.id'].isin(players_list)]], ignore_index=True)
 
-_dir = './Static/Data/Stats/'
-files = os.listdir(_dir)
-files.sort(reverse=True)
+    players_df.loc[players_df['team.abbreviation'] == 'ORI', 'team.abbreviation'] = 'ANZ'
+    
+    player_options, teams = players_breakdown(players_df.sort_values(by=['season', 'player.lastName'], ascending=[False, True]))
 
-pitching_df = pd.DataFrame()
+    _dir = base_path+folder+'Stats/'
+    files = os.listdir(_dir)
+    files.sort(reverse=True)
 
-for file in files:
-    df = pd.read_csv(f'{_dir}{file}')
-    # pitching_df = pd.concat([pitching_df, df], ignore_index=True, join='outer')
-    pitching_df = pd.concat([pitching_df, df], ignore_index=True, sort=False)
+    print(_dir)
 
-_dir = './Static/Data/Play by play/'
-files = os.listdir(_dir)
-files.sort(reverse=True)
+    pitching_df = pd.DataFrame()
 
-play_by_play_df = pd.DataFrame()
+    for file in files:
+        df = pd.read_csv(f'{_dir}{file}')
+        # pitching_df = pd.concat([pitching_df, df], ignore_index=True, join='outer')
+        pitching_df = pd.concat([pitching_df, df], ignore_index=True, sort=False)
 
-for file in files:
-    df = pd.read_csv(f'{_dir}{file}')
-    df['season'] = file.replace('.csv', '')
-    play_by_play_df = pd.concat([play_by_play_df, df], ignore_index=True)
+    _dir = base_path+folder+'Play by play/'
+    files = os.listdir(_dir)
+    files.sort(reverse=True)
 
-_dir = './Static/Data/Team/'
-files = os.listdir(_dir)
-files.sort(reverse=True)
+    print(_dir)
 
-team_stats_df = pd.DataFrame()
+    play_by_play_df = pd.DataFrame()
 
-for file in files:
-    df = pd.read_csv(f'{_dir}{file}')
-    df['season'] = file.replace('.csv', '')
-    team_stats_df = pd.concat([team_stats_df, df], ignore_index=True)
+    for file in files:
+        df = pd.read_csv(f'{_dir}{file}')
+        df['season'] = file.replace('.csv', '')
+        play_by_play_df = pd.concat([play_by_play_df, df], ignore_index=True)
 
+    _dir = base_path+folder+'Team/'
+    files = os.listdir(_dir)
+    files.sort(reverse=True)
+
+    print(_dir)
+
+    team_stats_df = pd.DataFrame()
+
+    for file in files:
+        df = pd.read_csv(f'{_dir}{file}')
+        df['season'] = file.replace('.csv', '')
+        team_stats_df = pd.concat([team_stats_df, df], ignore_index=True)
+
+    return player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df
+
+player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict['Regular Season'])
 
 col1, col2 = st.columns([3, 1])
 
@@ -181,13 +202,33 @@ with col1:
 
 # Add components to the second column (narrow view)
 with col2:
-    player = st.selectbox(
-        label = "Select a Pitcher",
-        options = player_options.keys(),
-        index = None,
-        format_func = lambda x: player_options[x],
-        placeholder = "type the name of the player...",
-    )
+
+    col_1, col_2 = st.columns([1, 1])
+
+    with col_1:
+
+        seasonTypeSelected = st.selectbox(
+            label = "Select a Season Type",
+            options = ['Regular Season', 'Wild Card', 'Round Robin'],
+            index = 0,
+            # format_func = lambda x: player_options[x],
+            placeholder = "type the name of the player...",
+        )
+
+        if seasonTypeSelected != 'Regular Season':
+            player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict[seasonTypeSelected])
+        else:
+            player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict['Regular Season'])
+
+    with col_2:
+
+        player = st.selectbox(
+            label = "Select a Pitcher",
+            options = player_options.keys(),
+            index = None,
+            format_func = lambda x: player_options[x],
+            placeholder = "type the name of the player...",
+        )
 
 st.divider()
 
@@ -349,6 +390,11 @@ else:
                 disabled=False
             )
             
+    # st.write(pitching_df.loc[pitching_df['Season'] == season_selected])
+
+    # show_df = pd.merge(players_df[['player.fullName']], pitching_df.loc[pitching_df['Season'] == season_selected], on='player.id', how='inner')
+    # st.write(show_df[show_df['stat.inningsPitched_1'] < 56])
+
     filtered_colective_stats = team_stats_df.loc[team_stats_df['Season'] == season_selected].sort_values(by=['Season', 'ERA'], ascending=[True, True])
 
     standard_ = filtered_colective_stats[table_fields['pitching']['standard']]
