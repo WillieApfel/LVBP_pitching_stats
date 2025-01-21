@@ -130,7 +130,7 @@ st.markdown(
 def get_data(folder):
     _dir = base_path+folder+'Players/'
 
-    print(_dir)
+    # print(_dir)
 
     # List all files in the directory
     files = os.listdir(_dir)
@@ -156,7 +156,7 @@ def get_data(folder):
     files = os.listdir(_dir)
     files.sort(reverse=True)
 
-    print(_dir)
+    # print(_dir)
 
     pitching_df = pd.DataFrame()
 
@@ -169,7 +169,7 @@ def get_data(folder):
     files = os.listdir(_dir)
     files.sort(reverse=True)
 
-    print(_dir)
+    # print(_dir)
 
     play_by_play_df = pd.DataFrame()
 
@@ -182,7 +182,7 @@ def get_data(folder):
     files = os.listdir(_dir)
     files.sort(reverse=True)
 
-    print(_dir)
+    # print(_dir)
 
     team_stats_df = pd.DataFrame()
 
