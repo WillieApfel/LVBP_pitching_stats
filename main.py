@@ -28,7 +28,8 @@ base_path = './Static/Data/'
 seasonType_dict = {
     'Regular Season': 'RS/',
     'Wild Card': 'WC/',
-    'Round Robin': 'RR/'
+    'Round Robin': 'RR/',
+    'Finals': 'FN/'
 }
 
 teams = {
@@ -209,7 +210,7 @@ with col2:
 
         seasonTypeSelected = st.selectbox(
             label = "Select a Season Type",
-            options = ['Regular Season', 'Wild Card', 'Round Robin'],
+            options = ['Regular Season', 'Wild Card', 'Round Robin', 'Finals'],
             index = 0,
             # format_func = lambda x: player_options[x],
             placeholder = "type the name of the player...",
