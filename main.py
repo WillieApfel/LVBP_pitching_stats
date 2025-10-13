@@ -519,7 +519,7 @@ share_bar = """
     <!-- The social media icon bar -->
     <div class="icon-bar">
         <a href="http://www.facebook.com/sharer.php?u={share_url}" class="facebook"><i class="fa fa-facebook"></i></a>
-        <a href="http://twitter.com/share?text=&url={share_url}&hashtags=LVBP" class="twitter"><i class="fa fa-twitter"></i></a>
+        <a href="https://x.com/intent/post?url={share_url}" class="twitter"><i class="fa fa-twitter"></i></a>
         <!-- <a href="#" class="google"><i class="fa fa-google"></i></a> -->
         <!-- <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a> -->
         <a href="https://api.whatsapp.com/send?text={share_url}" class="whatsapp"><i class="fa fa-whatsapp"></i></a>
