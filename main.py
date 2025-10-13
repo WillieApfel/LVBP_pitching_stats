@@ -7,6 +7,7 @@ import re
 import csv
 import os
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import matplotlib.pyplot as plt # type: ignore
 from matplotlib.patches import FancyBboxPatch # type: ignore
 from PIL import Image, ImageOps # type: ignore
@@ -21,9 +22,12 @@ from functions import *
 # Settings
 season = '2024'
 statGroup = 'pitching'
+share_url = 'https://lvbp-pitching-stats.streamlit.app/'
+
+# Obtener los parámetros de la URL
+params = st.query_params
 
 base_path = './Static/Data/'
-# folder = 'RS/'
 
 seasonType_dict = {
     'Regular Season': 'RS/',
@@ -222,18 +226,27 @@ with col2:
             player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict['Regular Season'])
 
     with col_2:
-
-        player = st.selectbox(
+        
+        if "player" in params and int(params["player"]) in list(player_options.keys()):
+            # st.write("✅ Sí, se envió el parámetro 'nombre'")
+            player = st.selectbox(
             label = "Select a Pitcher",
             options = player_options.keys(),
-            index = None,
+            index = list(player_options.keys()).index(int(params["player"])),
             format_func = lambda x: player_options[x],
             placeholder = "type the name of the player...",
         )
+        else:
+            # st.write("❌ No, no se envió el parámetro 'nombre'")
+            player = st.selectbox(
+                label = "Select a Pitcher",
+                options = player_options.keys(),
+                index = None,
+                format_func = lambda x: player_options[x],
+                placeholder = "type the name of the player...",
+            )
 
 st.divider()
-
-# st.write(pitching_df)
 
 players_df.set_index(['player.id'], inplace = True)
 pitching_df = pitching_stats_format(pitching_df)
@@ -243,6 +256,8 @@ team_stats_df['Team'] = team_stats_df['team.id'].map(lambda x: teams[x]['fullNam
 
 if player:
 
+    share_url = f'https://lvbp-pitching-stats.streamlit.app/?player={player}'
+
     filtered_stat_df = pitching_df.loc[pitching_df['player.id'] == player]
 
     standard_ = filtered_stat_df[table_fields['pitching']['standard']]
@@ -251,18 +266,19 @@ if player:
     pitchedBall_ = filtered_stat_df[table_fields['pitching']['pitchedBall']]
     winProb_ = filtered_stat_df[table_fields['pitching']['winProb']]
 
-    st.subheader("Player Information", divider="gray")
+    # st.subheader("Player Information", divider="gray")
+    # st.subheader("", divider="gray")
 
     headshot_url = get_headshot_url(player, 'milb')
 
-    col1, col2, col3 = st.columns([1, 1, 1])
+    col1, col2 = st.columns([2, 6])
 
     with col1:
 
         # Mostrar la imagen con el marco en Streamlit
         # st.image(framed_image)
 
-        frame_size = 12
+        frame_size = 7
         img_w = 180
         img_h = 260
 
@@ -270,7 +286,7 @@ if player:
 
             st.markdown(
                 f"""
-                <div style="display: flex; justify-content: left;">
+                <div style="display: flex; justify-content: center;">
                     <img src="{headshot_url}" alt="Imagen con marco" style="border: {frame_size}px solid #BEC2C4; border-radius: 5px; width: {img_w + frame_size}px; height: {img_h + frame_size}px;">
                 </div>
                 <br>
@@ -278,13 +294,27 @@ if player:
                 unsafe_allow_html=True
             )
 
-        st.write(f'Full Name: {players_df['player.fullFMLName'][player]}')
-        st.write(f'Team: {players_df['team.name'][player]}')
-        st.write(f'Position: {players_df['position.type'][player]}')
-        st.write(f'Bats/Throws: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]}')
-        st.write(f'Birthdate: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')}')
-        st.write(f'Birthplace: {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
-        st.write(f'Last Active Season: {players_df['season'][player]}')
+        # st.write(f'Full Name: {players_df['player.fullFMLName'][player]}')
+        # st.write(f'Team: {players_df['team.name'][player]}')
+        # st.write(f'Position: {players_df['position.type'][player]}')
+        # st.write(f'Bats/Throws: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]}')
+        # st.write(f'Birthdate: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')}')
+        # st.write(f'Birthplace: {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
+        # st.write(f'Last Active Season: {players_df['season'][player]}')
+
+    with col2:
+        if not pd.isna(players_df['player.primaryNumber'][player]):
+            st.title(f'{players_df['player.nameFirstLast'][player]} #{int(players_df['player.primaryNumber'][player])}')
+        else:
+            st.title(f'{players_df['player.nameFirstLast'][player]}')
+        st.subheader(f'{players_df['team.name'][player]}')
+        st.subheader(f'{players_df['position.abbreviation'][player]} | Bats/Throws: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]} | {players_df['player.height'][player]}/{int(players_df['player.weight'][player])}')
+        st.subheader(f'Born: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')} in {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
+
+
+    # with col3:
+    #     st.title(f'{players_df['position.type'][player]}')
+    #     st.subheader(f'{players_df['team.name'][player]}')
 
     st.markdown('')
     st.subheader("Standard Stats", divider="gray")
@@ -356,7 +386,10 @@ if player:
     col1, col2 = st.columns([1, 1])
 
     lefties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'L']
+    # lefties = plot_data = pd.DataFrame({ 'coordinates.coordX': [ -20, 0 ], 'coordinates.coordY': [ 220, 0 ], 'result.eventType': [ 'single', 'double' ] })
     righties = filtered_spraychart_df_1.loc[filtered_spraychart_df_1['matchup.batSide.code'] == 'R']
+
+    # st.write(lefties)
 
     with col1:
         show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs LHBs', theme)
@@ -401,7 +434,7 @@ else:
     standard_ = filtered_colective_stats[table_fields['pitching']['standard']]
     advanced_ = filtered_colective_stats[table_fields['pitching']['advanced']]
     battedBall_ = filtered_colective_stats[table_fields['pitching']['battedBall']]
-    pitchedBall_ = filtered_colective_stats[table_fields['pitching']['pitchedBall']]
+    pitchedBall_ = filtered_colective_stats[table_fields['pitching']['advanced']]
 
     st.markdown('')
     st.subheader("Standard Stats", divider="gray")
@@ -423,3 +456,78 @@ else:
     st.subheader("Pitched Ball Stats", divider="gray")
     # st.dataframe(pitchedBall_, hide_index = True, use_container_width=True)
     pitching_stats_formater(pitchedBall_)
+
+share_bar = """        
+    <style>
+        
+        .icon-bar {
+            position: fixed;
+            bottom: 10%;
+            left: 93%;
+            /*width: 100%;
+            display: flex;*/
+            justify-content: center;
+            /*background-color: #333;
+            z-index: 9999;*/
+        }
+
+        .icon-bar a {
+            display: block;
+            text-align: center;
+            padding: 8px;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 15px;
+        }
+
+        .icon-bar a:hover {
+            background-color: #000;
+        }
+
+        .facebook {
+            background: #3B5998;
+            color: white;
+        }
+
+        .twitter {
+            background: #55ACEE;
+            color: white;
+        }
+
+        .google {
+            background: #dd4b39;
+            color: white;
+        }
+
+        .linkedin {
+            background: #007bb5;
+            color: white;
+        }
+
+        .whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+    </style>
+
+""" + f"""
+
+    <!-- Load font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- The social media icon bar -->
+    <div class="icon-bar">
+        <a href="http://www.facebook.com/sharer.php?u={share_url}" class="facebook"><i class="fa fa-facebook"></i></a>
+        <a href="http://twitter.com/share?text=&url={share_url}&hashtags=LVBP" class="twitter"><i class="fa fa-twitter"></i></a>
+        <!-- <a href="#" class="google"><i class="fa fa-google"></i></a> -->
+        <!-- <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a> -->
+        <a href="https://api.whatsapp.com/send?text={share_url}" class="whatsapp"><i class="fa fa-whatsapp"></i></a>
+    </div>            
+
+"""
+
+
+
+
+st.markdown(share_bar, unsafe_allow_html=True)
