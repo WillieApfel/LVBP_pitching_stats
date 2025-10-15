@@ -203,7 +203,21 @@ col1, col2 = st.columns([3, 1])
 
 # Add components to the first column (wide view)
 with col1:
-    st.header(':baseball: LVBP Pitching Stats') 
+    # st.header(':baseball: LVBP Pitching Stats') 
+    
+    st.markdown(
+        """
+            <style>
+                .page-title {
+                    color: white;
+                    text-decoration: none;
+                }
+            </style>
+            <h2><a class="page-title" style="color: white;" href="https://lvbp-pitching-stats.streamlit.app/">⚾ LVBP Pitching Stats</a></h2>
+        """,
+        unsafe_allow_html=True
+    )
+
 
 # Add components to the second column (narrow view)
 with col2:
