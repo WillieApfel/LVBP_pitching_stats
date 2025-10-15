@@ -221,12 +221,11 @@ with col1:
         """
             <style>
                 .page-title {
-                    color: white;
                     text-decoration: none;
                 }
             </style>
         """+f"""
-            <h2><a class="page-title" style="color: white;" href="https://lvbp-pitching-stats.streamlit.app/">⚾ {structure[lang][1]}</a></h2>
+            <h2><a class="page-title" href="https://lvbp-pitching-stats.streamlit.app/">⚾ {structure[lang][1]}</a></h2>
         """,
         unsafe_allow_html=True
     )
