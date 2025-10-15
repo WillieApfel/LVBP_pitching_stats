@@ -29,12 +29,15 @@ season = '2024'
 statGroup = 'pitching'
 share_url = 'https://lvbp-pitching-stats.streamlit.app/'
 lang = 'ES'
+share_param = ''
 
 # Obtener los parámetros de la URL
 params = st.query_params
 
 if "lang" in params and params["lang"] in lang_list:
-    lang = 'EN'
+    lang = params["lang"]
+    share_param = f'&lang={lang}'
+    share_url = f'{share_url}?lang={lang}'
 
 base_path = './Static/Data/'
 
@@ -280,7 +283,7 @@ team_stats_df['Team'] = team_stats_df['team.id'].map(lambda x: teams[x]['fullNam
 
 if player:
 
-    share_url = f'https://lvbp-pitching-stats.streamlit.app/?player={player}'
+    share_url = f'https://lvbp-pitching-stats.streamlit.app/?player={player}{share_param}'
 
     filtered_stat_df = pitching_df.loc[pitching_df['player.id'] == player]
 
