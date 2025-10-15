@@ -22,6 +22,7 @@ from functions import *
 # Obtener Textos de la Pagina
 structure = pd.read_csv(f'./Static/Page Structure.csv', sep = ";").set_index('Code').to_dict()
 
+lang_list = ['EN', 'ES']
 
 # Settings
 season = '2024'
@@ -31,6 +32,9 @@ lang = 'ES'
 
 # Obtener los parámetros de la URL
 params = st.query_params
+
+if "lang" in params and params["lang"] in lang_list:
+    lang = 'EN'
 
 base_path = './Static/Data/'
 
