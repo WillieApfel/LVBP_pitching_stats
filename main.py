@@ -19,10 +19,15 @@ from io import BytesIO
 # Importar todas las funciones desde utils.py
 from functions import *
 
+# Obtener Textos de la Pagina
+structure = pd.read_csv(f'./Static/Page Structure.csv', sep = ";").set_index('Code').to_dict()
+
+
 # Settings
 season = '2024'
 statGroup = 'pitching'
 share_url = 'https://lvbp-pitching-stats.streamlit.app/'
+lang = 'ES'
 
 # Obtener los parámetros de la URL
 params = st.query_params
@@ -30,10 +35,10 @@ params = st.query_params
 base_path = './Static/Data/'
 
 seasonType_dict = {
-    'Regular Season': 'RS/',
-    'Wild Card': 'WC/',
-    'Round Robin': 'RR/',
-    'Finals': 'FN/'
+    structure[lang][5]: 'RS/',
+    structure[lang][6]: 'WC/',
+    structure[lang][7]: 'RR/',
+    structure[lang][8]: 'FN/'
 }
 
 teams = {
@@ -197,9 +202,9 @@ def get_data(folder):
 
     return player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df
 
-player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict['Regular Season'])
+player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict[structure[lang][5]])
 
-col1, col2 = st.columns([3, 1])
+col1, col2 = st.columns([3, 2])
 
 # Add components to the first column (wide view)
 with col1:
@@ -213,7 +218,8 @@ with col1:
                     text-decoration: none;
                 }
             </style>
-            <h2><a class="page-title" style="color: white;" href="https://lvbp-pitching-stats.streamlit.app/">⚾ LVBP Pitching Stats</a></h2>
+        """+f"""
+            <h2><a class="page-title" style="color: white;" href="https://lvbp-pitching-stats.streamlit.app/">⚾ {structure[lang][1]}</a></h2>
         """,
         unsafe_allow_html=True
     )
@@ -227,37 +233,37 @@ with col2:
     with col_1:
 
         seasonTypeSelected = st.selectbox(
-            label = "Select a Season Type",
-            options = ['Regular Season', 'Wild Card', 'Round Robin', 'Finals'],
+            label = structure[lang][2],
+            options = [structure[lang][5], structure[lang][6], structure[lang][7], structure[lang][8]],
             index = 0,
             # format_func = lambda x: player_options[x],
-            placeholder = "type the name of the player...",
+            placeholder = structure[lang][9],
         )
 
-        if seasonTypeSelected != 'Regular Season':
+        if seasonTypeSelected != structure[lang][5]:
             player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict[seasonTypeSelected])
         else:
-            player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict['Regular Season'])
+            player_options, teams, players_df, pitching_df, play_by_play_df, team_stats_df = get_data(seasonType_dict[structure[lang][5]])
 
     with col_2:
         
         if "player" in params and int(params["player"]) in list(player_options.keys()):
             # st.write("✅ Sí, se envió el parámetro 'nombre'")
             player = st.selectbox(
-            label = "Select a Pitcher",
+            label = structure[lang][3],
             options = player_options.keys(),
             index = list(player_options.keys()).index(int(params["player"])),
             format_func = lambda x: player_options[x],
-            placeholder = "type the name of the player...",
+            placeholder = structure[lang][10],
         )
         else:
             # st.write("❌ No, no se envió el parámetro 'nombre'")
             player = st.selectbox(
-                label = "Select a Pitcher",
+                label = structure[lang][3],
                 options = player_options.keys(),
                 index = None,
                 format_func = lambda x: player_options[x],
-                placeholder = "type the name of the player...",
+                placeholder = structure[lang][10],
             )
 
 st.divider()
@@ -322,8 +328,8 @@ if player:
         else:
             st.title(f'{players_df['player.nameFirstLast'][player]}')
         st.subheader(f'{players_df['team.name'][player]}')
-        st.subheader(f'{players_df['position.abbreviation'][player]} | Bats/Throws: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]} | {players_df['player.height'][player]}/{int(players_df['player.weight'][player])}')
-        st.subheader(f'Born: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')} in {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
+        st.subheader(f'{players_df['position.abbreviation'][player]} | {structure[lang][11]}: {players_df['player.batSide.code'][player]}/{players_df['player.pitchHand.code'][player]} | {players_df['player.height'][player]}/{int(players_df['player.weight'][player])}')
+        st.subheader(f'{structure[lang][12]}: {datetime.strptime(players_df['player.birthDate'][player], '%Y-%m-%d').strftime('%d/%m/%Y')} {structure[lang][13]} {players_df['player.birthCity'][player]}, {players_df['player.birthCountry'][player]}')
 
 
     # with col3:
@@ -331,32 +337,32 @@ if player:
     #     st.subheader(f'{players_df['team.name'][player]}')
 
     st.markdown('')
-    st.subheader("Standard Stats", divider="gray")
+    st.subheader(structure[lang][14], divider="gray")
     # st.dataframe(filtered_stat_df[table_fields['pitching']['standard']], hide_index = True, use_container_width=True)
     pitching_stats_formater(standard_)
 
     st.markdown('')
-    st.subheader("Advanced Stats", divider="gray")
+    st.subheader(structure[lang][15], divider="gray")
     # st.dataframe(filtered_stat_df[table_fields['pitching']['advanced']], hide_index = True, use_container_width=True)
     pitching_stats_formater(advanced_)
 
     st.markdown('')
-    st.subheader("Batted Ball Stats", divider="gray")
+    st.subheader(structure[lang][16], divider="gray")
     # st.dataframe(filtered_stat_df[table_fields['pitching']['battedBall']], hide_index = True, use_container_width=True)
     pitching_stats_formater(battedBall_)
 
     st.markdown('')
-    st.subheader("Pitched Ball Stats", divider="gray")
+    st.subheader(structure[lang][17], divider="gray")
     # st.dataframe(filtered_stat_df[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)
     pitching_stats_formater(pitchedBall_)
 
     st.markdown('')
-    st.subheader("Win Probability", divider="gray")
+    st.subheader(structure[lang][18], divider="gray")
     # st.dataframe(filtered_stat_df[table_fields['pitching']['winProb']], hide_index = True, use_container_width=True)
     pitching_stats_formater(winProb_)
 
     st.markdown('')
-    st.subheader("Spray Charts", divider="gray")
+    st.subheader(structure[lang][19], divider="gray")
     # st.pyplot(filtered_spraychart_df.plot(y='coordinates.coordY', x='coordinates.coordX', kind='scatter', title='Spray Char'))
 
     hit_colors = {
@@ -379,18 +385,18 @@ if player:
 
         if len(seasons_spraychart) == 1:
             season_spraychart = st.selectbox(
-                label = "Select a Season",
+                label = structure[lang][4],
                 options = seasons_spraychart,
                 index = 0,
-                placeholder = "type the name of the player...",
+                placeholder = structure[lang][10],
                 disabled=True
             )
         else:
             season_spraychart = st.selectbox(
-                label = "Select a Season",
+                label = structure[lang][4],
                 options = seasons_spraychart,
                 index = 0,
-                placeholder = "type the name of the player...",
+                placeholder = structure[lang][10],
                 disabled=False
             )
 
@@ -406,10 +412,10 @@ if player:
     # st.write(lefties)
 
     with col1:
-        show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs LHBs', theme)
+        show_spraychart(hit_colors, lefties, f'{players_df['player.fullName'][player]} vs {structure[lang][20]}', theme)
 
     with col2:
-        show_spraychart(hit_colors, righties, f'{players_df['player.fullName'][player]} vs RHBs', theme)
+        show_spraychart(hit_colors, righties, f'{players_df['player.fullName'][player]} vs {structure[lang][21]}', theme)
 
 else:
 
@@ -423,18 +429,18 @@ else:
 
         if len(seasons_list) == 1:
             season_selected = st.selectbox(
-                label = "Select a Season",
+                label = structure[lang][4],
                 options = seasons_list,
                 index = 0,
-                placeholder = "type the name of the player...",
+                placeholder = structure[lang][10],
                 disabled=True
             )
         else:
             season_selected = st.selectbox(
-                label = "Select a Season",
+                label = structure[lang][4],
                 options = seasons_list,
                 index = 0,
-                placeholder = "type the name of the player...",
+                placeholder = structure[lang][10],
                 disabled=False
             )
             
@@ -451,23 +457,23 @@ else:
     pitchedBall_ = filtered_colective_stats[table_fields['pitching']['advanced']]
 
     st.markdown('')
-    st.subheader("Standard Stats", divider="gray")
+    st.subheader(structure[lang][14], divider="gray")
     # st.dataframe(standard_, hide_index = True, use_container_width=True)
     pitching_stats_formater(standard_)
 
     st.markdown('')
-    st.subheader("Advanced Stats", divider="gray")
+    st.subheader(structure[lang][15], divider="gray")
     # st.dataframe(advanced_, hide_index = False, use_container_width=True)
     pitching_stats_formater(advanced_)
 
 
     st.markdown('')
-    st.subheader("Batted Ball Stats", divider="gray")
+    st.subheader(structure[lang][16], divider="gray")
     # st.dataframe(battedBall_, hide_index = True, use_container_width=True)
     pitching_stats_formater(battedBall_)
 
     st.markdown('')
-    st.subheader("Pitched Ball Stats", divider="gray")
+    st.subheader(structure[lang][17], divider="gray")
     # st.dataframe(pitchedBall_, hide_index = True, use_container_width=True)
     pitching_stats_formater(pitchedBall_)
 
@@ -541,7 +547,20 @@ share_bar = """
 
 """
 
-
-
-
 st.markdown(share_bar, unsafe_allow_html=True)
+
+with st.expander("Glosario"):
+
+    split = ( max(structure[lang]) - 100 ) / 3
+
+    col1, col2, col3 = st.columns([1, 1, 1])
+    for i in range( 101, max(structure[lang])):
+        if i < 101 + split:
+            with col1:
+                structure[lang][i]
+        elif i < 101 + ( split * 2 ):
+            with col2:
+                structure[lang][i]
+        else:
+            with col3:
+                structure[lang][i]
