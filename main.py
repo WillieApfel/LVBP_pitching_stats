@@ -25,7 +25,7 @@ structure = pd.read_csv(f'./Static/Page Structure.csv', sep = ";").set_index('Co
 lang_list = ['EN', 'ES']
 
 # Settings
-season = '2024'
+season = '2025'
 statGroup = 'pitching'
 share_url = 'https://lvbp-pitching-stats.streamlit.app/'
 lang = 'ES'
