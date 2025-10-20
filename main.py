@@ -344,27 +344,27 @@ if player:
 
     st.markdown('')
     st.subheader(structure[lang][14], divider="gray")
-    # st.dataframe(filtered_stat_df[table_fields['pitching']['standard']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['standard']], hide_index = True, width='Stretch')
     pitching_stats_formater(standard_)
 
     st.markdown('')
     st.subheader(structure[lang][15], divider="gray")
-    # st.dataframe(filtered_stat_df[table_fields['pitching']['advanced']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['advanced']], hide_index = True, width='Stretch')
     pitching_stats_formater(advanced_)
 
     st.markdown('')
     st.subheader(structure[lang][16], divider="gray")
-    # st.dataframe(filtered_stat_df[table_fields['pitching']['battedBall']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['battedBall']], hide_index = True, width='Stretch')
     pitching_stats_formater(battedBall_)
 
     st.markdown('')
     st.subheader(structure[lang][17], divider="gray")
-    # st.dataframe(filtered_stat_df[table_fields['pitching']['pitchedBall']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['pitchedBall']], hide_index = True, width='Stretch')
     pitching_stats_formater(pitchedBall_)
 
     st.markdown('')
     st.subheader(structure[lang][18], divider="gray")
-    # st.dataframe(filtered_stat_df[table_fields['pitching']['winProb']], hide_index = True, use_container_width=True)
+    # st.dataframe(filtered_stat_df[table_fields['pitching']['winProb']], hide_index = True, width='Stretch')
     pitching_stats_formater(winProb_)
 
     st.markdown('')
@@ -464,23 +464,23 @@ else:
 
     st.markdown('')
     st.subheader(structure[lang][14], divider="gray")
-    # st.dataframe(standard_, hide_index = True, use_container_width=True)
+    # st.dataframe(standard_, hide_index = True, width='Stretch')
     pitching_stats_formater(standard_)
 
     st.markdown('')
     st.subheader(structure[lang][15], divider="gray")
-    # st.dataframe(advanced_, hide_index = False, use_container_width=True)
+    # st.dataframe(advanced_, hide_index = False, width='Stretch')
     pitching_stats_formater(advanced_)
 
 
     st.markdown('')
     st.subheader(structure[lang][16], divider="gray")
-    # st.dataframe(battedBall_, hide_index = True, use_container_width=True)
+    # st.dataframe(battedBall_, hide_index = True, width='Stretch')
     pitching_stats_formater(battedBall_)
 
     st.markdown('')
     st.subheader(structure[lang][17], divider="gray")
-    # st.dataframe(pitchedBall_, hide_index = True, use_container_width=True)
+    # st.dataframe(pitchedBall_, hide_index = True, width='Stretch')
     pitching_stats_formater(pitchedBall_)
 
 share_bar = """        

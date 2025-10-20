@@ -4,6 +4,7 @@ import urllib3 # type: ignore
 import pandas as pd # type: ignore
 import csv
 import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns
 import requests
 from bs4 import BeautifulSoup
 
@@ -160,7 +161,7 @@ def pitching_stats_formater(stats):
         'MD': '{:.0f}'
     })
 
-    st.dataframe(styled_df, hide_index = True, use_container_width=True)
+    st.dataframe(styled_df, hide_index = True, width='stretch')
 
 
 def show_spraychart(hit_colors, plot_data, title, theme):
@@ -227,3 +228,5 @@ def show_spraychart(hit_colors, plot_data, title, theme):
 
     # Display plot in Streamlit
     st.pyplot(fig)
+
+#def show_heatmap(plot_data, title, theme):
