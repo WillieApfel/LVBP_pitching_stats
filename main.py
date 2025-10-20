@@ -460,7 +460,7 @@ else:
     standard_ = filtered_colective_stats[table_fields['pitching']['standard']]
     advanced_ = filtered_colective_stats[table_fields['pitching']['advanced']]
     battedBall_ = filtered_colective_stats[table_fields['pitching']['battedBall']]
-    pitchedBall_ = filtered_colective_stats[table_fields['pitching']['advanced']]
+    pitchedBall_ = filtered_colective_stats[table_fields['pitching']['pitchedBall']]
 
     st.markdown('')
     st.subheader(structure[lang][14], divider="gray")
