@@ -6,4 +6,5 @@ datetime
 matplotlib
 urllib3
 pillow
+beautifulsoup4
 seaborn
