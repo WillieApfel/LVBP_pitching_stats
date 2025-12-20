@@ -43,7 +43,7 @@ def players_breakdown(players_df):
     players_df.set_index(['player.id'], inplace = True)
 
     for index, row in players_df.iterrows():
-        player_options[index] = row['player.fullName']
+        player_options[index] = f'{row['player.fullName']} - {row['team.abbreviation']}'
         teams[row['team.id']] = { 'fullName': row['team.name'],  'abbreviation': row['team.abbreviation']}
 
     return player_options, teams
